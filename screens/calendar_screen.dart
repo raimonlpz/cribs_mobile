@@ -43,9 +43,7 @@ class CalendarScreen extends StatelessWidget {
               ],
             ),
             child: CalendarCarousel<Event>(
-              onDayPressed: (DateTime date, List<Event> events) {
-                //this.setState(() => _currentDate = date);
-              },
+              onDayPressed: (DateTime date, List<Event> events) {},
               weekendTextStyle: TextStyle(
                 color: Colors.pink[100],
               ),

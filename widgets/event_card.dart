@@ -20,8 +20,11 @@ class _EventCardState extends State<EventCard> {
   ToggleActionEvent eventAction;
 
   didChangeDependencies() {
-    bool checkEvent = Provider.of<UserProvider>(context, listen: false)
-        .isEventAlreadySaved(widget.event.id);
+    bool checkEvent = Provider.of<UserProvider>(context, listen: true)
+            .user
+            .favEvents
+            .indexWhere((_id) => _id == widget.event.id) !=
+        -1;
     if (checkEvent) {
       eventAction = ToggleActionEvent.RemoveEvent;
     } else {

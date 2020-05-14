@@ -28,8 +28,13 @@ class _SearchScreenState extends State<SearchScreen> {
       eventsFiltered = events.where((event) {
         return event.title.toLowerCase().contains(valueSearch);
       }).toList();
+
       valueSearch.length > 0 ? searchMode = true : searchMode = false;
     });
+    if (valueSearch.length == 0) {
+      Navigator.of(context).pop();
+      Navigator.of(context).pushNamed(SearchScreen.routeName);
+    }
   }
 
   @override
@@ -64,12 +69,12 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           ),
           eventsFiltered.length > 0
-              ? Container(
+              ? new Container(
                   margin: EdgeInsets.only(top: 60, bottom: 5),
-                  child: ListView.builder(
+                  child: new ListView.builder(
                     itemCount: eventsFiltered.length,
                     itemBuilder: (BuildContext context, ind) {
-                      return EventCard(eventsFiltered[ind], searchMode);
+                      return new EventCard(eventsFiltered[ind], searchMode);
                     },
                   ),
                 )

@@ -25,15 +25,6 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
-  bool isEventAlreadySaved(int id) {
-    try {
-      _user.favEvents.firstWhere((_id) => _id == id);
-      return true;
-    } catch (err) {
-      return false;
-    }
-  }
-
   void removeEventFromFavs(int id) {
     _user.favEvents.removeWhere((_id) => _id == id);
     notifyListeners();

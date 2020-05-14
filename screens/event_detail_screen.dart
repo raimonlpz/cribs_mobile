@@ -5,12 +5,36 @@ import 'calendar_screen.dart';
 import 'package:provider/provider.dart';
 import '../providers/user_provider.dart';
 
-class EventDetailScreen extends StatelessWidget {
+enum ToggleActionEvent {
+  SaveEvent,
+  RemoveEvent,
+}
+
+class EventDetailScreen extends StatefulWidget {
   static final routeName = '/event-detail-screen';
+  createState() => _EventDetailScreenState();
+}
+
+class _EventDetailScreenState extends State<EventDetailScreen> {
+  Event event;
+  ToggleActionEvent eventAction;
+
+  didChangeDependencies() {
+    event = ModalRoute.of(context).settings.arguments;
+    bool checkEvent = Provider.of<UserProvider>(context, listen: true)
+            .user
+            .favEvents
+            .indexWhere((_id) => _id == event.id) !=
+        -1;
+    if (checkEvent) {
+      eventAction = ToggleActionEvent.RemoveEvent;
+    } else {
+      eventAction = ToggleActionEvent.SaveEvent;
+    }
+    super.didChangeDependencies();
+  }
 
   Widget build(BuildContext context) {
-    final Event event = ModalRoute.of(context).settings.arguments;
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: appbarHeader('Event details', Colors.black),
@@ -105,36 +129,31 @@ class EventDetailScreen extends StatelessWidget {
               ),
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamed(CalendarScreen.routeName);
-            },
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: Container(
-                margin: EdgeInsets.only(top: 60),
-                decoration: BoxDecoration(
-                  color: Colors.greenAccent,
-                  shape: BoxShape.circle,
-                  border: Border.all(
+          Align(
+            alignment: Alignment.topCenter,
+            child: Container(
+              margin: EdgeInsets.only(top: 60),
+              decoration: BoxDecoration(
+                color: Colors.greenAccent,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.black,
+                  width: 1.0,
+                ),
+                boxShadow: [
+                  BoxShadow(
                     color: Colors.black,
-                    width: 1.0,
+                    spreadRadius: 5,
+                    blurRadius: 8,
+                    offset: Offset(1, 3),
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black,
-                      spreadRadius: 5,
-                      blurRadius: 8,
-                      offset: Offset(1, 3),
-                    ),
-                  ],
-                ),
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(CalendarScreen.routeName);
-                  },
-                  icon: Icon(Icons.event),
-                ),
+                ],
+              ),
+              child: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed(CalendarScreen.routeName);
+                },
+                icon: Icon(Icons.event),
               ),
             ),
           ),
@@ -142,11 +161,25 @@ class EventDetailScreen extends StatelessWidget {
       ),
       floatingActionButton: Builder(builder: (BuildContext ctx) {
         return FloatingActionButton.extended(
-          label: Text('Save Event'),
+          label: eventAction == ToggleActionEvent.RemoveEvent
+              ? Text('Unsave')
+              : Text('Save Event'),
           elevation: 20,
           onPressed: () {
-            Provider.of<UserProvider>(context, listen: false)
-                .addEventToFavs(event.id);
+            if (eventAction == ToggleActionEvent.RemoveEvent) {
+              Provider.of<UserProvider>(context, listen: false)
+                  .removeEventFromFavs(event.id);
+              setState(() {
+                eventAction = ToggleActionEvent.SaveEvent;
+              });
+            } else {
+              Provider.of<UserProvider>(context, listen: false)
+                  .addEventToFavs(event.id);
+              setState(() {
+                eventAction = ToggleActionEvent.RemoveEvent;
+              });
+            }
+
             Scaffold.of(ctx).hideCurrentSnackBar();
             final snackBar = SnackBar(
               backgroundColor: Colors.greenAccent,
@@ -155,7 +188,9 @@ class EventDetailScreen extends StatelessWidget {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20))),
               content: Text(
-                'Adding Event to Favorites...',
+                eventAction == ToggleActionEvent.RemoveEvent
+                    ? 'Adding Event to Favorites...'
+                    : 'Removing Event from Favorites',
                 style: TextStyle(
                     color: Colors.black,
                     fontStyle: FontStyle.italic,
@@ -165,8 +200,19 @@ class EventDetailScreen extends StatelessWidget {
                 label: 'UNDO',
                 textColor: Colors.pink[200],
                 onPressed: () {
-                  Provider.of<UserProvider>(context, listen: false)
-                      .removeEventFromFavs(event.id);
+                  if (eventAction == ToggleActionEvent.RemoveEvent) {
+                    Provider.of<UserProvider>(context, listen: false)
+                        .removeEventFromFavs(event.id);
+                    setState(() {
+                      eventAction = ToggleActionEvent.SaveEvent;
+                    });
+                  } else {
+                    Provider.of<UserProvider>(context, listen: false)
+                        .addEventToFavs(event.id);
+                    setState(() {
+                      eventAction = ToggleActionEvent.RemoveEvent;
+                    });
+                  }
                 },
               ),
             );
@@ -174,10 +220,9 @@ class EventDetailScreen extends StatelessWidget {
             Scaffold.of(ctx).showSnackBar(snackBar);
           },
           backgroundColor: Colors.black,
-          icon: Icon(
-            Icons.favorite_border,
-            color: Colors.white,
-          ),
+          icon: eventAction == ToggleActionEvent.RemoveEvent
+              ? Icon(Icons.favorite, color: Colors.pink[100])
+              : Icon(Icons.favorite_border, color: Colors.white),
         );
       }),
     );
