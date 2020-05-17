@@ -5,7 +5,7 @@ class Event {
   final String title;
   final String description;
   final int ownerId;
-  final String date;
+  final DateTime date;
   final String location;
   final String imageUrl;
   final double lat;
@@ -36,7 +36,7 @@ List<Event> events = [
     description:
         '343 describes itself as an artist-focused, feminist-led, queer arts space, housing recording studios, a practice space, a radio station and more. The pandemic forced 343 to close.',
     ownerId: 0,
-    date: '02/05/2020',
+    date: DateTime(2020, 5, 31),
     location: 'Paris, FR',
     lat: 41.501401,
     long: 2.1317263,
@@ -49,7 +49,7 @@ List<Event> events = [
     description:
         'Bandcamp has emerged as one of the most ethical platforms for buying music, with a favourable fee structure that means most money spent on Bandcamp goes directly to the artist or label.',
     ownerId: 0,
-    date: '30/09/2019',
+    date: DateTime(2020, 5, 4),
     location: 'Lisbon, PR',
     lat: 41.3893913,
     long: 2.1862896,
@@ -62,7 +62,7 @@ List<Event> events = [
     description:
         'You might be familiar with aidnq, if not for his work with Truants then with Bandcloud, the weekly newsletter where he shares his favourite music from Bandcamp and SoundCloud.',
     ownerId: 0,
-    date: '12/04/2020',
+    date: DateTime(2020, 5, 1),
     location: 'Barcelona, SP',
     lat: 41.475914,
     long: 2.0952533,
@@ -75,7 +75,7 @@ List<Event> events = [
     description:
         'The German is, by and large, a deep house producer. You can hear this in the synths, chords and atmospheres he has used in his music for the past ten years, and its there in the watercolour moods of "Slu Terms."',
     ownerId: 1,
-    date: '09/12/2022',
+    date: DateTime(2020, 5, 31),
     location: 'Berlin, GR',
     lat: 41.3957491,
     long: 2.1901236,
@@ -87,7 +87,7 @@ List<Event> events = [
     description:
         'In the second edition of Self-Isolation 101, a video series dreamt up for this strange era, DJs, producers and people across dance music world share their tips for making the most of all those hours at home.',
     ownerId: 1,
-    date: '12/03/2021',
+    date: DateTime(2020, 5, 21),
     location: 'London, UK',
     lat: 41.3977199,
     long: 2.1889168,
@@ -100,7 +100,7 @@ List<Event> events = [
     description:
         'Alongside Richard H. Kirk and Chris Watson, Stephen Mallinder was a founding member of Cabaret Voltaire. Like the pioneering Sheffield group themselves.',
     ownerId: 1,
-    date: '04/09/2021',
+    date: DateTime(2020, 5, 6),
     location: 'Berlin, GR',
     lat: 41.3780556,
     long: 2.1728113,
@@ -113,7 +113,7 @@ List<Event> events = [
     description:
         'In conversation, we hear of the cultural inputs that shaped Mallinders outlook and the germ cells of the musical movements in which he took part.',
     ownerId: 1,
-    date: '31/04/2022',
+    date: DateTime(2020, 5, 22),
     location: 'Barcelona, SP',
     lat: 41.3743992,
     long: 2.1673775,

@@ -23,16 +23,17 @@ class _EventsScreenState extends State<EventsScreen> {
   List<int> initCreated;
 
   @override
-  void initState() {
+  void didChangeDependencies() {
     UserProvider initProvider =
-        Provider.of<UserProvider>(context, listen: false);
+        Provider.of<UserProvider>(context, listen: true);
     initFav = initProvider.user.favEvents;
     initCreated = initProvider.user.createdEvents;
-    super.initState();
+    super.didChangeDependencies();
   }
 
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: Container(
@@ -170,35 +171,53 @@ class _EventsScreenState extends State<EventsScreen> {
                     (initCreated.length > 0 &&
                         toggledEventsToDisplay == ChoiceOpt.CreatedByUser)
                 ? Consumer<UserProvider>(
-                    builder: (context, userBloc, _) => Container(
-                      margin: EdgeInsets.only(top: 10),
-                      height: MediaQuery.of(context).size.height - 205,
-                      child: ListView.builder(
-                        itemCount: toggledEventsToDisplay == ChoiceOpt.Favorite
-                            ? userBloc.user.favEvents.length
-                            : userBloc.user.createdEvents.length,
-                        itemBuilder: (BuildContext context, i) {
-                          List<Event> fullEventObj = [];
-                          if (toggledEventsToDisplay == ChoiceOpt.Favorite) {
-                            userBloc.user.favEvents.map((id) {
-                              fullEventObj.add(getEventFromId(events, id));
-                            }).toList();
-                          } else {
-                            userBloc.user.createdEvents.map((id) {
-                              fullEventObj.add(getEventFromId(events, id));
-                            }).toList();
-                          }
-                          return fullEventObj.length > 0
-                              ? Center(child: EventListHome(fullEventObj[i]))
-                              : SizedBox();
-                        },
+                    builder: (context, userBloc, _) => Expanded(
+                      child: Container(
+                        margin: EdgeInsets.only(top: 10),
+                        height: MediaQuery.of(context).size.height - 205,
+                        child: ListView.builder(
+                          itemCount:
+                              toggledEventsToDisplay == ChoiceOpt.Favorite
+                                  ? userBloc.user.favEvents.length
+                                  : userBloc.user.createdEvents.length,
+                          itemBuilder: (BuildContext context, i) {
+                            List<Event> fullEventObj = [];
+                            if (toggledEventsToDisplay == ChoiceOpt.Favorite) {
+                              userBloc.user.favEvents.map((id) {
+                                fullEventObj.add(getEventFromId(events, id));
+                              }).toList();
+                            } else {
+                              userBloc.user.createdEvents.map((id) {
+                                fullEventObj.add(getEventFromId(events, id));
+                              }).toList();
+                            }
+                            return fullEventObj.length > 0
+                                ? Center(child: EventListHome(fullEventObj[i]))
+                                : SizedBox();
+                          },
+                        ),
                       ),
                     ),
                   )
                 : Center(
                     child: Container(
-                        margin: EdgeInsets.only(top: 180),
-                        child: Text('No Events to Display'))),
+                      margin: EdgeInsets.only(top: 80),
+                      child: Center(
+                        child: Column(children: [
+                          Container(
+                            height: 200,
+                            width: 200,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage('assets/img/lime2.png'),
+                                  fit: BoxFit.fitWidth),
+                            ),
+                          ),
+                          Text('No events to show'),
+                        ]),
+                      ),
+                    ),
+                  ),
           ],
         ),
       ),

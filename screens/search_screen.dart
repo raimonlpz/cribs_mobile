@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/event_card.dart';
 import '../widgets/appbar_header.dart';
 import '../models/event.dart';
-import 'package:keyboard_visibility/keyboard_visibility.dart';
+//import 'package:keyboard_visibility/keyboard_visibility.dart';
 
 class SearchScreen extends StatefulWidget {
   static final routeName = '/search-screen';
@@ -14,13 +14,13 @@ class _SearchScreenState extends State<SearchScreen> {
   List<Event> eventsFiltered = events;
   bool searchMode = false;
 
-  @override
-  void initState() {
-    super.initState();
-    KeyboardVisibilityNotification().addNewListener(onHide: () {
-      FocusScope.of(context).requestFocus(new FocusNode());
-    });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   KeyboardVisibilityNotification().addNewListener(onHide: () {
+  //     FocusScope.of(context).requestFocus(new FocusNode());
+  //   });
+  // }
 
   void _onChange(String value) {
     setState(() {
@@ -32,8 +32,7 @@ class _SearchScreenState extends State<SearchScreen> {
       valueSearch.length > 0 ? searchMode = true : searchMode = false;
     });
     if (valueSearch.length == 0) {
-      Navigator.of(context).pop();
-      Navigator.of(context).pushNamed(SearchScreen.routeName);
+      Navigator.of(context).popAndPushNamed(SearchScreen.routeName);
     }
   }
 
@@ -78,7 +77,27 @@ class _SearchScreenState extends State<SearchScreen> {
                     },
                   ),
                 )
-              : Center(child: Text('Event Not Found')),
+              : Center(
+                  child: Container(
+                    margin: EdgeInsets.only(top: 200),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 150,
+                            width: 150,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage('assets/img/lime3.png'),
+                                  fit: BoxFit.fitHeight),
+                            ),
+                          ),
+                          Text('Event not found'),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
         ],
       ),
     );

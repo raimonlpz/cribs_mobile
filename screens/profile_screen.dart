@@ -41,7 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             circleId: CircleId('${event.id}'),
             center: LatLng(event.lat, event.long),
             radius: 300,
-            fillColor: Color.fromRGBO(125, 224, 142, 0.4),
+            fillColor: Color.fromRGBO(143, 254, 223, 0.7),
             strokeWidth: 2,
             consumeTapEvents: true,
             onTap: () {
@@ -61,7 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           consumeTapEvents: true,
           center: LatLng(position.latitude, position.longitude),
           radius: 600,
-          fillColor: Color.fromRGBO(255, 124, 142, 0.5),
+          fillColor: Color.fromRGBO(207, 145, 186, 0.5),
           strokeWidth: 2,
           onTap: () {
             setState(() {
@@ -83,13 +83,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   @override
-  initState() {
+  didChangeDependencies() {
     getLocation().then((position) {
       _setCircles(position);
     });
 
-    super.initState();
+    super.didChangeDependencies();
   }
+
+  // @override
+  // void dispose() {
+  //   _controller.complete();
+  //   super.dispose();
+  // }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -165,7 +171,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             bottom: 55), //MediaQuery.of(context).size.height,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
-                          color: Colors.white,
+                          gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Colors.white,
+                                Colors.tealAccent,
+                                Colors.white,
+                                Colors.pink[100],
+                                Colors.white,
+                              ]),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.withOpacity(0.5),

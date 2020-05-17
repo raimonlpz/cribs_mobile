@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../widgets/navDrawer.dart';
 import 'profile_screen.dart';
 import '../widgets/users_list.dart';
 import '../widgets/event_list_home.dart';
 import '../models/user.dart';
 import '../models/event.dart';
+import '../providers/event_provider.dart';
 
 class Home extends StatelessWidget {
   Widget build(BuildContext context) {
+    List<Event> _events = Provider.of<EventProvider>(context).events;
+
     return Scaffold(
       drawer: NavDrawer(),
       appBar: AppBar(
@@ -51,9 +55,9 @@ class Home extends StatelessWidget {
                 bottom: MediaQuery.of(context).size.height / 2 + 20, top: 5),
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: events.length,
+              itemCount: _events.length,
               itemBuilder: (BuildContext context, i) {
-                return EventListHome(events[i]);
+                return EventListHome(_events[i]);
               },
             ),
           ),

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import '../models/event.dart';
 import '../widgets/appbar_header.dart';
 import 'calendar_screen.dart';
+import 'map_screen.dart';
 import 'package:provider/provider.dart';
 import '../providers/user_provider.dart';
+import 'package:intl/intl.dart';
 
 enum ToggleActionEvent {
   SaveEvent,
@@ -121,7 +123,8 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                   SizedBox(
                       height: 30,
                       child: Text('...', style: TextStyle(fontSize: 20))),
-                  Text('Loc: ${event.location} | Date: ${event.date}',
+                  Text(
+                      'Loc: ${event.location} | Date: ${DateFormat('yyyy-MM-dd').format(event.date)}',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.pinkAccent)),
@@ -151,9 +154,39 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
               ),
               child: IconButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed(CalendarScreen.routeName);
+                  Navigator.of(context)
+                      .pushNamed(CalendarScreen.routeName, arguments: event);
                 },
                 icon: Icon(Icons.event),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: Container(
+              margin: EdgeInsets.only(top: 295),
+              decoration: BoxDecoration(
+                color: Colors.pink[200],
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.black,
+                  width: 1.0,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black,
+                    spreadRadius: 5,
+                    blurRadius: 8,
+                    offset: Offset(1, 3),
+                  ),
+                ],
+              ),
+              child: IconButton(
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushNamed(MapScreen.routeName, arguments: event);
+                },
+                icon: Icon(Icons.location_on),
               ),
             ),
           ),
@@ -182,7 +215,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
 
             Scaffold.of(ctx).hideCurrentSnackBar();
             final snackBar = SnackBar(
-              backgroundColor: Colors.greenAccent,
+              backgroundColor: Colors.black,
               duration: Duration(milliseconds: 800),
               elevation: 6.0,
               shape: RoundedRectangleBorder(
@@ -192,7 +225,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                     ? 'Adding Event to Favorites...'
                     : 'Removing Event from Favorites',
                 style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                     fontStyle: FontStyle.italic,
                     fontFamily: 'Dead'),
               ),

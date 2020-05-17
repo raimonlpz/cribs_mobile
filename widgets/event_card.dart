@@ -3,6 +3,7 @@ import '../models/event.dart';
 import '../screens/event_detail_screen.dart';
 import '../providers/user_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 enum ToggleActionEvent {
   SaveEvent,
@@ -66,7 +67,7 @@ class _EventCardState extends State<EventCard> {
                 child: Column(
                   children: [
                     Text(widget.event.location),
-                    Text(widget.event.date),
+                    Text(DateFormat('yyyy-MM-dd').format(widget.event.date)),
                   ],
                 ),
               ),
@@ -79,6 +80,10 @@ class _EventCardState extends State<EventCard> {
                 FlatButton(
                   child: Icon(Icons.more, color: Colors.black),
                   onPressed: () {
+                    FocusScopeNode currentFocus = FocusScope.of(context);
+                    if (!currentFocus.hasPrimaryFocus) {
+                      currentFocus.unfocus();
+                    }
                     Navigator.of(context).pushNamed(EventDetailScreen.routeName,
                         arguments: widget.event);
                   },
@@ -110,7 +115,7 @@ class _EventCardState extends State<EventCard> {
 
                           Scaffold.of(context).hideCurrentSnackBar();
                           final snackBar = SnackBar(
-                            backgroundColor: Colors.greenAccent,
+                            backgroundColor: Colors.black,
                             duration: Duration(milliseconds: 800),
                             elevation: 6.0,
                             shape: RoundedRectangleBorder(
@@ -121,7 +126,7 @@ class _EventCardState extends State<EventCard> {
                                   ? 'Adding Event to Favorites...'
                                   : 'Removing Event from Favorites...',
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: Colors.white,
                                   fontStyle: FontStyle.italic,
                                   fontFamily: 'Dead'),
                             ),

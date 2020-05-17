@@ -8,7 +8,10 @@ import 'screens/create_screen.dart';
 import 'screens/calendar_screen.dart';
 import 'screens/search_screen.dart';
 import 'screens/event_detail_screen.dart';
+import 'screens/form_confirmation.dart';
+import 'screens/map_screen.dart';
 import 'providers/user_provider.dart';
+import 'providers/event_provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -33,10 +36,13 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: UserProvider(),
         ),
+        ChangeNotifierProvider.value(
+          value: EventProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Cybertea',
+        title: 'Cribs',
         theme: ThemeData(
           primaryIconTheme: IconThemeData(color: Colors.white),
           primarySwatch: Colors.pink,
@@ -50,6 +56,8 @@ class MyApp extends StatelessWidget {
           CalendarScreen.routeName: (ctx) => CalendarScreen(),
           SearchScreen.routeName: (ctx) => SearchScreen(),
           EventDetailScreen.routeName: (ctx) => EventDetailScreen(),
+          FormConfirmation.routeName: (ctx) => FormConfirmation(),
+          MapScreen.routeName: (ctx) => MapScreen(),
         },
       ),
     );

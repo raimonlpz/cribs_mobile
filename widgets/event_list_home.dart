@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/event.dart';
 import '../screens/event_detail_screen.dart';
+import 'package:intl/intl.dart';
 
 class EventListHome extends StatelessWidget {
   final Event event;
@@ -47,7 +48,7 @@ class EventListHome extends StatelessWidget {
                       color: Colors.pinkAccent, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  '${event.location} | ${event.date}',
+                  '${event.location} | ${DateFormat('yyyy-MM-dd').format(event.date)}',
                   style: TextStyle(fontSize: 10),
                 ),
               ],
